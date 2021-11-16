@@ -1,4 +1,5 @@
 /data
+/tmp
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks

@@ -4,7 +4,7 @@ import tensorflow as tf
 import tensorflow.keras.backend as Ba
 import tensorflow.keras.layers as La
 
-from . import preaudio
+from . import pre_audio
 
 
 def build(
@@ -14,8 +14,8 @@ def build(
 ) -> Tuple[La.Layer, La.Layer, La.Layer]:
 
     input_shape = (duration * sample_rate, 1)
-    inpt1, branch1 = preaudio.melspectrogram(input_shape, postfix="1")
-    inpt2, branch2 = preaudio.melspectrogram(input_shape, postfix="2")
+    inpt1, branch1 = pre_audio.melspectrogram(input_shape, postfix="1")
+    inpt2, branch2 = pre_audio.melspectrogram(input_shape, postfix="2")
     def stack_func(x): return Ba.stack([x[0], x[1]], axis=1)
     oupt = La.Lambda(stack_func, name="stack",)([branch1, branch2])
 
