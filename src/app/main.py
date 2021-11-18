@@ -25,15 +25,15 @@ if __name__ == "__main__":
         x=feeder.build(),
         epochs=4,
         steps_per_epoch=32,
-        # max_queue_size=100,
-        # callbacks=[
-        #     keras.callbacks.ModelCheckpoint(
-        #         filepath="tmp/weights.{epoch:02d}.hdf5",
-        #         save_weights_only=True,
-        #         save_freq="epoch",
-        #     ),
-        #     keras.callbacks.TensorBoard(
-        #         log_dir="tmp/logs",
-        #     )
-        # ]
+        max_queue_size=100,
+        callbacks=[
+            keras.callbacks.ModelCheckpoint(
+                filepath="tmp/weights.{epoch:02d}.hdf5",
+                save_weights_only=True,
+                save_freq="epoch",
+            ),
+            keras.callbacks.TensorBoard(
+                log_dir="tmp/logs",
+            )
+        ]
     )
