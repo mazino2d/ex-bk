@@ -109,12 +109,12 @@ if __name__ == "__main__":
             'n_classes': 2,
             'shuffle': True}
 
-    training_generator = DataGenerator(**params)
-    training_generator[0]
-    # audio = audio.read_mp3("data/train/song/0005.mp3")
-    # print(audio.shape)
-    # if audio.ndim > 1:
-    #     audio = np.mean(audio, axis=1)
-    # audio = np.expand_dims(audio, axis=1)
-    # print(audio.dtype)
-    # print(np.zeros((3,1), dtype=audio.dtype))
+    # training_generator = DataGenerator(**params)
+    # training_generator[0]
+    audio = audio.read_mp3("data/train/song/0005.mp3")
+    print(audio.shape)
+    if audio.ndim > 1:
+        audio = np.mean(audio, axis=1)
+    audio = np.expand_dims(audio, axis=1)
+    print(audio.dtype)
+    print(np.zeros((3,1), dtype=audio.dtype))
