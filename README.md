@@ -13,3 +13,7 @@ unzip ./data/train.zip -d ./data
 ```
 
 # Repo
+
+rsync -aurvh ./ \
+        root@---.trycloudflare.com:/root/ex-bk \
+        --exclude='.git' --exclude='log' --delete
