@@ -23,7 +23,9 @@ if __name__ == "__main__":
     model.summary()
 
     model.fit(
-        x=feeder.build(),
+        x=feeder.build(
+            
+        ),
         epochs=100,
         steps_per_epoch=1000,
         max_queue_size=1024,
