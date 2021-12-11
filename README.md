@@ -15,5 +15,5 @@ unzip ./data/train.zip -d ./data
 # Repo
 
 rsync -aurvh ./ \
-        root@---.trycloudflare.com:/root/ex-bk \
+        root@cost-phenomenon-settings-least.trycloudflare.com:/root/ex-bk-khoidd \
         --exclude='.git' --exclude='log' --delete
