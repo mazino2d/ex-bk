@@ -1,40 +1,36 @@
 import random as rd
 
-import tensorflow as tf
-import tensorflow_io as tfio
+import numpy as np
+from pydub import AudioSegment
 
 
-def read_aac(path: str) -> tf.Tensor:
-    audio = tfio.audio.decode_aac(tf.io.read_file(path))
-    return audio
+def read_mp3(path: str) -> np.ndarray:
+    audio = AudioSegment.from_mp3(path)
+    return np.array(audio.get_array_of_samples())
 
 
-def read_flac(path: str) -> tf.Tensor:
-    audio = tfio.audio.decode_flac(tf.io.read_file(path))
-    return audio
-
-
-def read_mp3(path: str) -> tf.Tensor:
-    audio = tfio.audio.decode_mp3(tf.io.read_file(path))
-    return audio
-
-
-def read_wav(path: str) -> tf.Tensor:
-    audio = tfio.audio.decode_wav(tf.io.read_file(path))
-    return audio
-
-
-def pick_audio(data: tf.Tensor, length: int) -> tf.Tensor:
+def pick_audio(data: np.ndarray, length: int) -> np.ndarray:
     size = data.shape[0] - length
     if size < 0:
         size = data.shape[0] // 2
     start = rd.randint(0, size)
-    output = data[start: start + length, :]
-
+    output = data[start: start + length]
     len_out = output.shape[0]
-    print(start)
-    print(len_out)
     if len_out < length:
-        paddings = tf.constant([[0, length - len_out], [0, 0]])
-        output = tf.pad(output, paddings, "CONSTANT")
+        output = np.pad(output, (0, length - len_out), "constant")
     return output
+
+
+if __name__ == "__main__":
+    filename = "/home/khoidd/project/ex-bk/data/train/train/song/0000.mp3"
+    data = read_mp3(filename)
+    print(type(data))
+    print(data.shape)
+    seg = pick_audio(np.array([1, 2, 3, 4, 5, 6]), 2)
+    print(type(seg))
+    print(seg)
+    print(seg.shape)
+    seg = pick_audio(np.array([1, 2, 3]), 10)
+    print(type(seg))
+    print(seg)
+    print(seg.shape)
