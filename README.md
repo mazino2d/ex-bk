@@ -15,5 +15,5 @@ unzip ./data/train.zip -d ./data
 # Repo
 
 rsync -aurvh ./ \
-        root@photographic-recent-really-journalist.trycloudflare.com:/root/ex-bk-khoidd \
+        root@peterson-sitting-consistently-solving.trycloudflare.com:/root/ex-bk-khoidd \
         --exclude='.git' --exclude='data' --exclude='tmp' --delete

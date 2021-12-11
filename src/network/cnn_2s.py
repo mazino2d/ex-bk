@@ -51,7 +51,7 @@ def build(
     def dot_product(data: tf.Tensor):
         embed0: tf.Tensor = data[:, 0, :, :, :]
         embed1: tf.Tensor = data[:, 1, :, :, :]
-        return Ba.sum(embed0 * embed1, axis=(1, 2, 3))
+        return Ba.sum(embed0 * embed1, axis=(1, 2, 3)) / (tf.norm(embed0) * tf.norm(embed1))
     oupt = La.Lambda(dot_product, name="classify")(oupt)
 
     return inpt1, inpt2, oupt
@@ -61,9 +61,9 @@ def deploy(
         duration: int = 5,
         sample_rate: int = 22050,
         pool_list=[(8, 3, 4), (8, 2, 2),
-                   (8, 2, 2), (8, 2, 2),
-                   (8, 2, 2), (8, 2, 2),
-                   (8, 2, 1)],
+                   (16, 2, 2), (16, 2, 2),
+                   (32, 2, 2), (32, 2, 2),
+                   (64, 2, 1)],
 ) -> Tuple[La.Layer, La.Layer, La.Layer]:
 
     input_shape = (duration * sample_rate, 1)
