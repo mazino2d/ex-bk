@@ -24,8 +24,8 @@ if __name__ == "__main__":
 
     model.fit(
         x=feeder.build(),
-        epochs=4,
-        steps_per_epoch=32,
+        epochs=100,
+        steps_per_epoch=1000,
         max_queue_size=1024,
         callbacks=[
             Ca.ModelCheckpoint(
