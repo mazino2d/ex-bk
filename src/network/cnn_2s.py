@@ -60,7 +60,10 @@ def build(
 def deploy(
         duration: int = 5,
         sample_rate: int = 22050,
-        pool_list=[(3, 4), (2, 2), (2, 2), (2, 2), (2, 2), (2, 2), (2, 1)],
+        pool_list=[(8, 3, 4), (8, 2, 2),
+                   (8, 2, 2), (8, 2, 2),
+                   (8, 2, 2), (8, 2, 2),
+                   (8, 2, 1)],
 ) -> Tuple[La.Layer, La.Layer, La.Layer]:
 
     input_shape = (duration * sample_rate, 1)
@@ -69,7 +72,7 @@ def deploy(
     cnn_layers = []
     for blk_idx, blk_shape in enumerate(pool_list):
         conv = La.Conv2D(
-            filters=8,
+            filters=blk_shape[0],
             kernel_size=(2, 2),
             padding='same',
             name=f'conv{blk_idx}',
@@ -83,7 +86,7 @@ def deploy(
             name=f'relu{blk_idx}',
         )
         pool = La.MaxPooling2D(
-            pool_size=blk_shape,
+            pool_size=blk_shape[1:],
             name=f'pool{blk_idx}',
         )
         dropout = La.Dropout(

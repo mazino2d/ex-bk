@@ -9,26 +9,17 @@ from src.util import audio
 
 if __name__ == "__main__":
     print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-    # trained model
-    inpt1, inpt2, oupt = cnn_2s.build()
-    model_train = keras.Model(
-        inputs=[inpt1, inpt2],
-        outputs=oupt,
-    )
-    model_train.load_weights("tmp/weights.126.hdf5")
-    model_train.summary()
+
     # deployed model
     inpt, oupt = cnn_2s.deploy()
     model_deploy = keras.Model(inputs=inpt, outputs=oupt)
     model_deploy.summary()
-
-    for layer in model_deploy.layers:
-        layer.set_weights(model_train.get_layer(layer.name).get_weights())
-
-    path_full_song = "data/public_test/full_song"
+    model_deploy.load_weights("tmp/weights.126.hdf5", by_name=True)
 
     annoy_index = AnnoyIndex(8, 'dot')
     map_song_idx = {}
+
+    path_full_song = "data/public_test/full_song"
     for idx, filename in enumerate(os.listdir(path_full_song)):
         path = f"{path_full_song}/{filename}"
         print(path)
@@ -55,6 +46,7 @@ if __name__ == "__main__":
         melody = tf.expand_dims(melody, axis=0)
         melody = tf.expand_dims(melody, axis=-1)
         output = tf.squeeze(model_deploy.predict(melody))
+        print(output)
         predict = annoy_index.get_nns_by_vector(output, 10)
         predict = [str(map_song_idx[e]) for e in predict]
         writer.write(filename + "," + ",".join(predict) + "\n")
