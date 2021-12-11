@@ -10,7 +10,7 @@ from . import pre_audio
 def build(
         duration: int = 5,
         sample_rate: int = 22050,
-        pool_list=[(3, 4), (2, 2), (2, 2), (2, 2), (2, 2), (2, 2), (2, 1)]
+        pool_list=[(3, 4), (2, 2), (2, 2), (2, 2), (2, 2), (2, 2), (2, 1)],
 ) -> Tuple[La.Layer, La.Layer, La.Layer]:
 
     input_shape = (duration * sample_rate, 1)
@@ -55,3 +55,44 @@ def build(
     oupt = La.Lambda(dot_product, name="classify")(oupt)
 
     return inpt1, inpt2, oupt
+
+
+def deploy(
+        duration: int = 5,
+        sample_rate: int = 22050,
+        pool_list=[(3, 4), (2, 2), (2, 2), (2, 2), (2, 2), (2, 2), (2, 1)],
+) -> Tuple[La.Layer, La.Layer, La.Layer]:
+
+    input_shape = (duration * sample_rate, 1)
+    inpt, oupt = pre_audio.melspectrogram(input_shape, postfix="1")
+
+    cnn_layers = []
+    for blk_idx, blk_shape in enumerate(pool_list):
+        conv = La.Conv2D(
+            filters=8,
+            kernel_size=(2, 2),
+            padding='same',
+            name=f'conv{blk_idx}',
+        )
+        bn = La.BatchNormalization(
+            axis=3,
+            name=f'bn{blk_idx}',
+        )
+        relu = La.Activation(
+            activation='relu',
+            name=f'relu{blk_idx}',
+        )
+        pool = La.MaxPooling2D(
+            pool_size=blk_shape,
+            name=f'pool{blk_idx}',
+        )
+        dropout = La.Dropout(
+            rate=0.25,
+            name=f'dropout{blk_idx}',
+        )
+        cnn_layers.extend([conv, bn, relu, pool, dropout])
+
+    for layer in cnn_layers:
+        oupt = layer(oupt)
+
+    return inpt, oupt

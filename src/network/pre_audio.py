@@ -23,7 +23,7 @@ def melspectrogram(
     output_data_format='channels_last',
     postfix='1',
 ):
-    inpt = La.Input(shape=input_shape)
+    inpt = La.Input(shape=input_shape, name="input_" + postfix)
 
     oupt = STFT(
         n_fft=n_fft,

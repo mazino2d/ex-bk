@@ -6,8 +6,8 @@ from src.util import audio
 from . import loader
 
 
-def build(num_pos: int = 1, num_neg: int = 5, length=22050*5):
-    df = loader.load("data/train/train/train_meta.csv")
+def build(num_pos: int = 1, num_neg: int = 7, length=22050*5):
+    df = loader.load("data/train/train_meta.csv")
     label = tf.constant([1]*num_pos + [0] * num_neg)
     while True:
         df_rand = df.sample(n=num_pos + num_neg).reset_index()

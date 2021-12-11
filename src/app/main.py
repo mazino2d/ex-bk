@@ -1,3 +1,4 @@
+import tensorflow as tf
 import tensorflow.keras as keras
 import tensorflow.keras.callbacks as Ca
 import tensorflow.keras.losses as Lo
@@ -7,6 +8,8 @@ from src.dataset import feeder
 from src.network import cnn_2s
 
 if __name__ == "__main__":
+    print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+
     inpt1, inpt2, oupt = cnn_2s.build()
 
     model = keras.Model(
@@ -24,10 +27,10 @@ if __name__ == "__main__":
 
     model.fit(
         x=feeder.build(
-            
+
         ),
-        epochs=100,
-        steps_per_epoch=1000,
+        epochs=10000,
+        steps_per_epoch=100,
         max_queue_size=1024,
         callbacks=[
             Ca.ModelCheckpoint(
